@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="track"
+            type="com.example.admin.musicplayer.data.model.Track" />
+        <variable
+            name="listener"
+            type="com.example.admin.musicplayer.screen.TrackClickListener"/>
+
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_item_movie"
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:onClick="@{() -> listener.onTrackClicked(track)}"
+        app:cardCornerRadius="@dimen/dp_4"
+        app:cardElevation="@dimen/dp_4"
+        app:cardUseCompatPadding="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_item_main_movie"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_120"
+                android:scaleType="center"
+                bind:imageUrl="@{track.getArtworkUrl()}"
+                android:src="@mipmap/img_audio"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_item_track_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_4"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="1"
+                android:text="@{track.getTitle()}"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_17"
+                app:layout_constraintBottom_toTopOf="@+id/text_item_track_singler"
+                app:layout_constraintEnd_toEndOf="@+id/image_item_main_movie"
+                app:layout_constraintStart_toStartOf="@+id/image_item_main_movie"
+                app:layout_constraintTop_toBottomOf="@+id/image_item_main_movie" />
+
+            <TextView
+                android:id="@+id/text_item_track_singler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="1"
+                android:text="@{track.getPublisherMetadata().getArtist()}"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/text_item_track_name"
+                app:layout_constraintStart_toStartOf="@+id/text_item_track_name" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>
