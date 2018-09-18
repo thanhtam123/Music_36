@@ -1,5 +1,8 @@
 package com.example.admin.musicplayer.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by TamTT on 9/14/2018.
  */
 
-public class User {
+public class User implements Parcelable{
     @SerializedName("avatar_url")
     @Expose
     private String mAvatarUrl;
@@ -53,6 +56,36 @@ public class User {
     @SerializedName("country_code")
     @Expose
     private String mCountryCode;
+
+    protected User(Parcel in) {
+        mAvatarUrl = in.readString();
+        mFirstName = in.readString();
+        mFullName = in.readString();
+        mId = in.readInt();
+        mKind = in.readString();
+        mLastModified = in.readString();
+        mLastName = in.readString();
+        mPermalink = in.readString();
+        mPermalinkUrl = in.readString();
+        mUri = in.readString();
+        mUrn = in.readString();
+        mUsername = in.readString();
+        mVerified = in.readByte() != 0;
+        mCity = in.readString();
+        mCountryCode = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getAvatarUrl() {
         return mAvatarUrl;
@@ -186,5 +219,29 @@ public class User {
                 ", mLastName='" + mLastName + '\'' +
                 ", mUsername='" + mUsername + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mAvatarUrl);
+        parcel.writeString(mFirstName);
+        parcel.writeString(mFullName);
+        parcel.writeInt(mId);
+        parcel.writeString(mKind);
+        parcel.writeString(mLastModified);
+        parcel.writeString(mLastName);
+        parcel.writeString(mPermalink);
+        parcel.writeString(mPermalinkUrl);
+        parcel.writeString(mUri);
+        parcel.writeString(mUrn);
+        parcel.writeString(mUsername);
+        parcel.writeByte((byte) (mVerified ? 1 : 0));
+        parcel.writeString(mCity);
+        parcel.writeString(mCountryCode);
     }
 }
