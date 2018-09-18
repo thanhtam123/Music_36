@@ -1,15 +1,19 @@
 package com.example.admin.musicplayer.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by TamTT on 9/14/2018.
  */
 
-public class Genre {
+public class Genre implements Parcelable{
     @SerializedName("genre")
     @Expose
     private String mGenre;
@@ -19,15 +23,46 @@ public class Genre {
     @SerializedName("last_updated")
     @Expose
     private String mLastUpdated;
-    @SerializedName("collections")
+    @SerializedName("collection")
     @Expose
-    private List<Collection> mCollections;
+    private ArrayList<Collection> mCollections;
     @SerializedName("query_urn")
     @Expose
     private String mQueryUrn;
     @SerializedName("next_href")
     @Expose
     private String mNextHref;
+
+    public List getListTrackFromGenre(Genre genre) {
+        List<Collection> collections = new ArrayList<>();
+        collections.addAll(genre.getCollections());
+        ArrayList<Track> tracks = new ArrayList<>();
+        for (Collection c : collections) {
+            tracks.add(c.getTrack());
+        }
+        return tracks;
+    }
+
+    protected Genre(Parcel in) {
+        mGenre = in.readString();
+        mKind = in.readString();
+        mLastUpdated = in.readString();
+        mQueryUrn = in.readString();
+        mNextHref = in.readString();
+        mCollections = in.createTypedArrayList(Collection.CREATOR);
+    }
+
+    public static final Creator<Genre> CREATOR = new Creator<Genre>() {
+        @Override
+        public Genre createFromParcel(Parcel in) {
+            return new Genre(in);
+        }
+
+        @Override
+        public Genre[] newArray(int size) {
+            return new Genre[size];
+        }
+    };
 
     public String getGenre() {
         return mGenre;
@@ -57,7 +92,7 @@ public class Genre {
         return mCollections;
     }
 
-    public void setCollections(List<Collection> collections) {
+    public void setCollections(ArrayList<Collection> collections) {
         this.mCollections = collections;
     }
 
@@ -87,5 +122,20 @@ public class Genre {
                 ", mQueryUrn='" + mQueryUrn + '\'' +
                 ", mNextHref='" + mNextHref + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mGenre);
+        parcel.writeString(mKind);
+        parcel.writeString(mLastUpdated);
+        parcel.writeString(mQueryUrn);
+        parcel.writeString(mNextHref);
+        parcel.writeList(mCollections);
     }
 }

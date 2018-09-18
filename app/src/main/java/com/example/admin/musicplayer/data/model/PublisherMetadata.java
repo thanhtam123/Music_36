@@ -1,5 +1,8 @@
 package com.example.admin.musicplayer.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by TamTT on 9/14/2018.
  */
 
-public class PublisherMetadata {
+public class PublisherMetadata implements Parcelable{
     @SerializedName("id")
     @Expose
     private int mId;
@@ -26,30 +29,35 @@ public class PublisherMetadata {
     @SerializedName("isrc")
     @Expose
     private String mIsrc;
-    @SerializedName("explicit")
-    @Expose
-    private boolean mExplicit;
     @SerializedName("writer_composer")
     @Expose
     private String mWriterComposer;
     @SerializedName("album_title")
     @Expose
     private String mAlbumTitle;
-    @SerializedName("iswc")
-    @Expose
-    private String mIswc;
-    @SerializedName("upc_or_ean")
-    @Expose
-    private String mUpcOrEan;
-    @SerializedName("p_line")
-    @Expose
-    private String mPLine;
-    @SerializedName("p_line_for_display")
-    @Expose
-    private String mPLineForDisplay;
-    @SerializedName("release_title")
-    @Expose
-    private String mReleaseTitle;
+
+    protected PublisherMetadata(Parcel in) {
+        mId = in.readInt();
+        mUrn = in.readString();
+        mArtist = in.readString();
+        mContainsMusic = in.readByte() != 0;
+        mPublisher = in.readString();
+        mIsrc = in.readString();
+        mWriterComposer = in.readString();
+        mAlbumTitle = in.readString();
+    }
+
+    public static final Creator<PublisherMetadata> CREATOR = new Creator<PublisherMetadata>() {
+        @Override
+        public PublisherMetadata createFromParcel(Parcel in) {
+            return new PublisherMetadata(in);
+        }
+
+        @Override
+        public PublisherMetadata[] newArray(int size) {
+            return new PublisherMetadata[size];
+        }
+    };
 
     public int getId() {
         return mId;
@@ -99,14 +107,6 @@ public class PublisherMetadata {
         mIsrc = isrc;
     }
 
-    public boolean isExplicit() {
-        return mExplicit;
-    }
-
-    public void setExplicit(boolean explicit) {
-        mExplicit = explicit;
-    }
-
     public String getWriterComposer() {
         return mWriterComposer;
     }
@@ -123,46 +123,6 @@ public class PublisherMetadata {
         mAlbumTitle = albumTitle;
     }
 
-    public String getIswc() {
-        return mIswc;
-    }
-
-    public void setIswc(String iswc) {
-        mIswc = iswc;
-    }
-
-    public String getUpcOrEan() {
-        return mUpcOrEan;
-    }
-
-    public void setUpcOrEan(String upcOrEan) {
-        mUpcOrEan = upcOrEan;
-    }
-
-    public String getPLine() {
-        return mPLine;
-    }
-
-    public void setPLine(String PLine) {
-        mPLine = PLine;
-    }
-
-    public String getPLineForDisplay() {
-        return mPLineForDisplay;
-    }
-
-    public void setPLineForDisplay(String PLineForDisplay) {
-        mPLineForDisplay = PLineForDisplay;
-    }
-
-    public String getReleaseTitle() {
-        return mReleaseTitle;
-    }
-
-    public void setReleaseTitle(String releaseTitle) {
-        mReleaseTitle = releaseTitle;
-    }
-
     @Override
     public String toString() {
         return "PublisherMetadata{" +
@@ -171,8 +131,24 @@ public class PublisherMetadata {
                 ", mArtist='" + mArtist + '\'' +
                 ", mContainsMusic=" + mContainsMusic +
                 ", mPublisher='" + mPublisher + '\'' +
-                ", mExplicit=" + mExplicit +
                 ", mAlbumTitle='" + mAlbumTitle + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
+        parcel.writeString(mUrn);
+        parcel.writeString(mArtist);
+        parcel.writeByte((byte) (mContainsMusic ? 1 : 0));
+        parcel.writeString(mPublisher);
+        parcel.writeString(mIsrc);
+        parcel.writeString(mWriterComposer);
+        parcel.writeString(mAlbumTitle);
     }
 }

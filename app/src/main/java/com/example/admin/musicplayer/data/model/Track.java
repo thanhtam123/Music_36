@@ -1,5 +1,8 @@
 package com.example.admin.musicplayer.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,19 +10,10 @@ import com.google.gson.annotations.SerializedName;
  * Created by TamTT on 9/14/2018.
  */
 
-public class Track {
+public class Track implements Parcelable {
     @SerializedName("artwork_url")
     @Expose
     private String mArtworkUrl;
-    @SerializedName("commentable")
-    @Expose
-    private boolean mCommentable;
-    @SerializedName("comment_count")
-    @Expose
-    private int mCommentCount;
-    @SerializedName("created_at")
-    @Expose
-    private String mCreatedAt;
     @SerializedName("description")
     @Expose
     private String mDescription;
@@ -38,9 +32,6 @@ public class Track {
     @SerializedName("full_duration")
     @Expose
     private int mFullDuration;
-    @SerializedName("embeddable_by")
-    @Expose
-    private String mEmbeddableBy;
     @SerializedName("genre")
     @Expose
     private String mGenre;
@@ -49,7 +40,7 @@ public class Track {
     private boolean mHasDownloadsLeft;
     @SerializedName("id")
     @Expose
-    public int mId;
+    private int mId;
     @SerializedName("kind")
     @Expose
     private String mKind;
@@ -59,9 +50,6 @@ public class Track {
     @SerializedName("last_modified")
     @Expose
     private String mLastModified;
-    @SerializedName("license")
-    @Expose
-    private String mLicense;
     @SerializedName("likes_count")
     @Expose
     private int mLikesCount;
@@ -77,27 +65,9 @@ public class Track {
     @SerializedName("public")
     @Expose
     private boolean mPublic;
-    @SerializedName("purchase_title")
+    @SerializedName("publisher_metadata")
     @Expose
-    private String mPurchaseTitle;
-    @SerializedName("purchase_url")
-    @Expose
-    private String mPurchaseUrl;
-    @SerializedName("release_date")
-    @Expose
-    private String mReleaseDate;
-    @SerializedName("reposts_count")
-    @Expose
-    private int mRepostsCount;
-    @SerializedName("secret_token")
-    @Expose
-    private String mSecretToken;
-    @SerializedName("sharing")
-    @Expose
-    private String mSharing;
-    @SerializedName("state")
-    @Expose
-    private String mState;
+    private PublisherMetadata mPublisherMetadata;
     @SerializedName("streamable")
     @Expose
     private boolean mStreamable;
@@ -106,7 +76,7 @@ public class Track {
     private String mTagList;
     @SerializedName("title")
     @Expose
-    public String mTitle;
+    private String mTitle;
     @SerializedName("uri")
     @Expose
     private String mUri;
@@ -116,21 +86,50 @@ public class Track {
     @SerializedName("user_id")
     @Expose
     private int mUserId;
-    @SerializedName("visuals")
-    @Expose
-    private String mVisuals;
     @SerializedName("waveform_url")
     @Expose
     private String mWaveformUrl;
-    @SerializedName("display_date")
-    @Expose
-    private String mDisplayDate;
-    @SerializedName("monetization_model")
-    @Expose
-    private String mMonetizationModel;
-    @SerializedName("policy")
-    @Expose
-    private String policy;
+
+    protected Track(Parcel in) {
+        mArtworkUrl = in.readString();
+        mDescription = in.readString();
+        mDownloadable = in.readByte() != 0;
+        mDownloadCount = in.readInt();
+        mDownloadUrl = in.readString();
+        mDuration = in.readInt();
+        mFullDuration = in.readInt();
+        mGenre = in.readString();
+        mHasDownloadsLeft = in.readByte() != 0;
+        mId = in.readInt();
+        mKind = in.readString();
+        mLabelName = in.readString();
+        mLastModified = in.readString();
+        mLikesCount = in.readInt();
+        mPermalink = in.readString();
+        mPermalinkUrl = in.readString();
+        mPlaybackCount = in.readInt();
+        mPublic = in.readByte() != 0;
+        mPublisherMetadata = in.readParcelable(PublisherMetadata.class.getClassLoader());
+        mStreamable = in.readByte() != 0;
+        mTagList = in.readString();
+        mTitle = in.readString();
+        mUri = in.readString();
+        mUrn = in.readString();
+        mUserId = in.readInt();
+        mWaveformUrl = in.readString();
+    }
+
+    public static final Creator<Track> CREATOR = new Creator<Track>() {
+        @Override
+        public Track createFromParcel(Parcel in) {
+            return new Track(in);
+        }
+
+        @Override
+        public Track[] newArray(int size) {
+            return new Track[size];
+        }
+    };
 
     public String getArtworkUrl() {
         return mArtworkUrl;
@@ -138,18 +137,6 @@ public class Track {
 
     public void setArtworkUrl(String artworkUrl) {
         this.mArtworkUrl = artworkUrl;
-    }
-
-    public boolean getCommentable() {
-        return mCommentable;
-    }
-
-    public int getCommentCount() {
-        return mCommentCount;
-    }
-
-    public String getCreatedAt() {
-        return mCreatedAt;
     }
 
     public String getDescription() {
@@ -196,9 +183,6 @@ public class Track {
         this.mFullDuration = fullDuration;
     }
 
-    public String getEmbeddableBy() {
-        return mEmbeddableBy;
-    }
 
     public String getGenre() {
         return mGenre;
@@ -210,6 +194,14 @@ public class Track {
 
     public void setHasDownloadsLeft(boolean hasDownloadsLeft) {
         this.mHasDownloadsLeft = hasDownloadsLeft;
+    }
+
+    public PublisherMetadata getPublisherMetadata() {
+        return mPublisherMetadata;
+    }
+
+    public void setPublisherMetadata(PublisherMetadata publisherMetadata) {
+        mPublisherMetadata = publisherMetadata;
     }
 
     public int getId() {
@@ -236,10 +228,6 @@ public class Track {
         return mLastModified;
     }
 
-    public String getLicense() {
-        return mLicense;
-    }
-
     public int getLikesCount() {
         return mLikesCount;
     }
@@ -258,34 +246,6 @@ public class Track {
 
     public boolean get_public() {
         return mPublic;
-    }
-
-    public String getPurchaseTitle() {
-        return mPurchaseTitle;
-    }
-
-    public String getPurchaseUrl() {
-        return mPurchaseUrl;
-    }
-
-    public String getReleaseDate() {
-        return mReleaseDate;
-    }
-
-    public int getRepostsCount() {
-        return mRepostsCount;
-    }
-
-    public String getSecretToken() {
-        return mSecretToken;
-    }
-
-    public String getSharing() {
-        return mSharing;
-    }
-
-    public String getState() {
-        return mState;
     }
 
     public boolean getStreamable() {
@@ -332,25 +292,13 @@ public class Track {
         this.mUserId = userId;
     }
 
-    public String getVisuals() {
-        return mVisuals;
-    }
-
     public String getWaveformUrl() {
         return mWaveformUrl;
     }
 
-    public String getDisplayDate() {
-        return mDisplayDate;
-    }
-
-    public String getPolicy() {
-        return policy;
-    }
-
     @Override
     public String toString() {
-        return "Track{" +
+        return "Track{" + "mArtUrl " + mArtworkUrl +
                 ", mDownloadable=" + mDownloadable +
                 ", mDownloadCount=" + mDownloadCount +
                 ", mDownloadUrl='" + mDownloadUrl + '\'' +
@@ -367,4 +315,38 @@ public class Track {
                 '}';
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mArtworkUrl);
+        parcel.writeString(mDescription);
+        parcel.writeByte((byte) (mDownloadable ? 1 : 0));
+        parcel.writeInt(mDownloadCount);
+        parcel.writeString(mDownloadUrl);
+        parcel.writeInt(mDuration);
+        parcel.writeInt(mFullDuration);
+        parcel.writeString(mGenre);
+        parcel.writeByte((byte) (mHasDownloadsLeft ? 1 : 0));
+        parcel.writeInt(mId);
+        parcel.writeString(mKind);
+        parcel.writeString(mLabelName);
+        parcel.writeString(mLastModified);
+        parcel.writeInt(mLikesCount);
+        parcel.writeString(mPermalink);
+        parcel.writeString(mPermalinkUrl);
+        parcel.writeInt(mPlaybackCount);
+        parcel.writeByte((byte) (mPublic ? 1 : 0));
+        parcel.writeParcelable(mPublisherMetadata, i);
+        parcel.writeByte((byte) (mStreamable ? 1 : 0));
+        parcel.writeString(mTagList);
+        parcel.writeString(mTitle);
+        parcel.writeString(mUri);
+        parcel.writeString(mUrn);
+        parcel.writeInt(mUserId);
+        parcel.writeString(mWaveformUrl);
+    }
 }
