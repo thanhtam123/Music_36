@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.admin.musicplayer.data.model.Genre;
 import com.example.admin.musicplayer.data.model.Track;
+import com.example.admin.musicplayer.screen.genres.GenreActivity;
 
 /**
  * Created by TamTT on 9/15/2018.
