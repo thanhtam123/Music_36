@@ -17,5 +17,11 @@ public interface GenreDataSource {
 
     interface RemoteDataSource {
         Single<Genre> getSingleGenre(String kind, @GenreType String type, String apiKey);
+
+        Single<Genre> getMoreTracksOnGenre(String kind,
+                                           @GenreType String type,
+                                           int offset,
+                                           String urn,
+                                           String apiKey);
     }
 }

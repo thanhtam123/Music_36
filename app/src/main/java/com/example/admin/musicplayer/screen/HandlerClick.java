@@ -19,8 +19,8 @@ public class HandlerClick {
     }
 
     public void onButtonMoreClicked(Genre genre) {
-        /*Intent intent = GenreActivity.getGenreIntent(mContext, genre);
-        mContext.startActivity(intent);*/
+        Intent intent = GenreActivity.getGenreIntent(mContext, genre);
+        mContext.startActivity(intent);
     }
 
     public void onButtonDownloadClick(Track track) {

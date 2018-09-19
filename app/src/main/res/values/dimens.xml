@@ -15,8 +15,10 @@
     <dimen name="sp_17">17sp</dimen>
     <dimen name="sp_22">22sp</dimen>
     <dimen name="sp_14">14sp</dimen>
-    <dimen name="dp_200">200dp</dimen>
+    <dimen name="dp_240">240dp</dimen>
     <dimen name="dp_64">64dp</dimen>
     <dimen name="dp_48">48dp</dimen>
     <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_70">70dp</dimen>
+    <dimen name="dp_0">0dp</dimen>
 </resources>

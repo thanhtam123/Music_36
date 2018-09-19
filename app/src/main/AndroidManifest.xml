@@ -24,6 +24,8 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/title_activity_main" />
+        <activity android:name=".screen.genres.GenreActivity"
+            android:theme="@style/TransparentActionBar"/>
     </application>
 
 </manifest>

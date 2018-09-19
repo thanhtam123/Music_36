@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.example.admin.musicplayer.screen.BindingUltils" />
+        <import type="android.view.View" />
+
+        <variable
+            name="track"
+            type="com.example.admin.musicplayer.data.model.Track" />
+
+        <variable
+            name="listener"
+            type="com.example.admin.musicplayer.screen.TrackClickListener" />
+
+        <variable
+            name="handler"
+            type="com.example.admin.musicplayer.screen.HandlerClick" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> listener.onTrackClicked(track)}">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="@dimen/dp_70"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:scaleType="fitXY"
+            android:src="@mipmap/img_audio"
+            bind:imageUrl="@{track.getArtworkUrl()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_track_name_search"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_16"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{track.getTitle()}"
+            android:textSize="@dimen/sp_17"
+            app:layout_constraintEnd_toStartOf="@+id/text_track_duration_search"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_track_artist_search"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{track.getPublisherMetadata().getArtist()}"
+            android:textSize="@dimen/sp_17"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_download_search"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/text_track_name_search" />
+
+        <ImageButton
+            android:id="@+id/button_download_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:background="@android:color/transparent"
+            android:visibility="@{track.getDownloadable() ? View.VISIBLE : View.GONE}"
+            android:onClick="@{() -> handler.onButtonDownloadClick(track)}"
+            android:src="@mipmap/ic_offline_off"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_track_duration_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{BindingUltils.convertMilisecToMinute(track.getDuration())}"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@+id/button_download_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

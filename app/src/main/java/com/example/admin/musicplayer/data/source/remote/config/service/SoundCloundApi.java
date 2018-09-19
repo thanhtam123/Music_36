@@ -18,4 +18,11 @@ public interface SoundCloundApi {
                                  @Query("genre") @GenreType String type,
                                  @Query("client_id") String apiKey);
 
+    @GET("/charts")
+    Single<Genre> getMoreTracksOnGenre(
+                                @Query("kind") String order,
+                                @Query("genre") @GenreType String type,
+                                @Query("offset") int offset,
+                                @Query("query_urn") String urn,
+                                @Query("client_id") String apiKey);
 }
