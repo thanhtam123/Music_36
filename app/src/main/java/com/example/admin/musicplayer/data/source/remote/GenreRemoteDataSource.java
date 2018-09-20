@@ -31,4 +31,9 @@ public class GenreRemoteDataSource implements GenreDataSource.RemoteDataSource {
     public Single<Genre> getSingleGenre(String kind, @GenreType String type, String apiKey) {
         return mSoundCloundApi.getSingleGenre(kind, type, apiKey);
     }
+
+    @Override
+    public Single<Genre> getMoreTracksOnGenre(String kind, String type, int offset, String urn, String apiKey) {
+        return mSoundCloundApi.getMoreTracksOnGenre(kind, type, offset, urn, apiKey);
+    }
 }
