@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.example.admin.musicplayer.screen.BindingUltils" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="track"
+            type="com.example.admin.musicplayer.data.model.Track" />
+
+        <variable
+            name="listener"
+            type="com.example.admin.musicplayer.screen.player.PlayerActivity" />
+
+        <variable
+            name="handler"
+            type="com.example.admin.musicplayer.screen.HandlerClick" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_primary_sanmarino"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemePlayer">
+
+        <ImageView
+            android:id="@+id/imageview_track"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_320"
+            android:scaleType="centerCrop"
+            bind:imageUrl="@{track.getArtworkUrl()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textview_name_track"
+            android:layout_width="@dimen/dp_240"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_20"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@{track.getTitle()}"
+            android:textSize="@dimen/sp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_track" />
+
+        <ImageView
+            android:id="@+id/imageview_favorite_genre"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_24"
+            android:onClick="@{() -> listener.onFavorite()}"
+            app:layout_constraintEnd_toStartOf="@+id/textview_name_track"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_name_track"
+            app:srcCompat="@mipmap/ic_like_off" />
+
+        <ImageView
+            android:id="@+id/imageview_download"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginEnd="@dimen/dp_32"
+            android:layout_marginTop="@dimen/dp_24"
+            android:onClick="@{() -> handler.onButtonDownloadClick(track)}"
+            android:src="@mipmap/ic_offline_off"
+            android:visibility="@{track.getDownloadable() ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textview_name_track"
+            app:layout_constraintTop_toBottomOf="@+id/textview_name_track" />
+
+        <TextView
+            android:id="@+id/textview_singer"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_24"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLength="1"
+            android:text="@{track.getPublisherMetadata().getArtist()}"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_download"
+            app:layout_constraintStart_toEndOf="@+id/imageview_favorite_genre"
+            app:layout_constraintTop_toBottomOf="@+id/textview_name_track" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="@dimen/dp_270"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintEnd_toStartOf="@+id/textview_time_total"
+            app:layout_constraintStart_toEndOf="@+id/textview_time_running"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_download" />
+
+        <TextView
+            android:id="@+id/textview_time_running"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_favorite_genre" />
+
+        <TextView
+            android:id="@+id/textview_time_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_24"
+            android:text="@{BindingUltils.convertMilisecToMinute(track.getDuration())}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_download" />
+
+        <ImageView
+            android:id="@+id/imageview_shuffle"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:onClick="@{() -> listener.onShuffer()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_time_running"
+            app:srcCompat="@mipmap/ic_shuffle_off_white" />
+
+        <ImageView
+            android:id="@+id/imageview_previous"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:onClick="@{() -> listener.onPrevious()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_play"
+            app:layout_constraintStart_toEndOf="@+id/imageview_shuffle"
+            app:layout_constraintTop_toBottomOf="@+id/textview_time_running"
+            app:srcCompat="@drawable/ic_previous" />
+
+        <ImageView
+            android:id="@+id/imageview_play"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:onClick="@{() -> listener.onPlayClick()}"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageview_previous"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_time_total" />
+
+        <ImageView
+            android:id="@+id/imageview_next"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:onClick="@{() -> listener.onNext()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_loop"
+            app:layout_constraintStart_toEndOf="@+id/imageview_play"
+            app:layout_constraintTop_toBottomOf="@+id/textview_time_total"
+            app:srcCompat="@drawable/ic_next" />
+
+        <ImageView
+            android:id="@+id/imageview_loop"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_marginStart="@dimen/dp_8"
+            android:onClick="@{() -> listener.onLoop()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageview_next"
+            app:layout_constraintTop_toBottomOf="@+id/textview_time_total"
+            app:srcCompat="@mipmap/ic_no_loop" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
