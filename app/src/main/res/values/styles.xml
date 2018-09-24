@@ -13,6 +13,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ThemePlayer" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="TransparentActionBar" parent="Theme.AppCompat.Light">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="colorPrimary">@android:color/transparent</item>

@@ -16,4 +16,9 @@
     <string name="nav_home">Home</string>
     <string name="nav_favorites">Favorite</string>
     <string name="nav_offline">Offline</string>
+    <string name="msg_loop_one">repeat this track</string>
+    <string name="msg_no_loop">No loop</string>
+    <string name="msg_loop_all">Loop all</string>
+    <string name="msg_off_shuffer">Shuffer off</string>
+    <string name="msg_on_shuffer">Shuffer on</string>
 </resources>
