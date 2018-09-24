@@ -1,12 +1,12 @@
 package com.example.admin.musicplayer.screen.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.admin.musicplayer.R;
 import com.example.admin.musicplayer.data.model.Genre;
@@ -14,7 +14,10 @@ import com.example.admin.musicplayer.data.model.Track;
 import com.example.admin.musicplayer.databinding.ItemGenreBinding;
 import com.example.admin.musicplayer.screen.HandlerClick;
 import com.example.admin.musicplayer.screen.TrackClickListener;
+import com.example.admin.musicplayer.screen.player.MusicService;
+import com.example.admin.musicplayer.screen.player.PlayerActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,7 +92,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
         private ItemGenreBinding mBinding;
         private TrackAdapter mAdapter;
         private Context mContext;
-
+        private ArrayList<Track> mTracks;
         GenreViewHolder(Context context, ItemGenreBinding binding) {
             super(binding.getRoot());
             mContext = context;
@@ -97,16 +100,21 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
         }
 
         void setBinding(Genre genre){
+            mTracks = (ArrayList<Track>) genre.getListTrackFromGenre(genre);
             mBinding.setGenre(genre);
             mAdapter = new TrackAdapter(this);
-            mAdapter.setTrackList(genre.getListTrackFromGenre(genre));
+            mAdapter.setTrackList(mTracks);
             mBinding.recyclerTrack.setAdapter(mAdapter);
             mBinding.executePendingBindings();
         }
 
         @Override
         public void onTrackClicked(Track track) {
-            Toast.makeText(mContext, track.getTitle(), Toast.LENGTH_SHORT).show();
+            Intent intent = PlayerActivity.getPlayerIntent(mContext);
+            mContext.startActivity(intent);
+            Intent intentService = MusicService.getMusicServiceIntent(mContext,
+                    mTracks.indexOf(track), mTracks);
+            mContext.startService(intentService);
         }
     }
 }
