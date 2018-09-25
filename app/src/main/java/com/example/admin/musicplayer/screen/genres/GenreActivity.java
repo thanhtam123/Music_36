@@ -10,7 +10,6 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.widget.Toast;
 
 import com.example.admin.musicplayer.BuildConfig;
 import com.example.admin.musicplayer.Constants;
@@ -20,6 +19,8 @@ import com.example.admin.musicplayer.data.model.Track;
 import com.example.admin.musicplayer.databinding.ActivityGenreBinding;
 import com.example.admin.musicplayer.screen.HandlerClick;
 import com.example.admin.musicplayer.screen.TrackClickListener;
+import com.example.admin.musicplayer.screen.player.MusicService;
+import com.example.admin.musicplayer.screen.player.PlayerActivity;
 
 import java.util.ArrayList;
 
@@ -104,6 +105,10 @@ public class GenreActivity extends AppCompatActivity implements TrackClickListen
 
     @Override
     public void onTrackClicked(Track track) {
-        Toast.makeText(GenreActivity.this, track.getTitle(), Toast.LENGTH_SHORT).show();
+        Intent intent = PlayerActivity.getPlayerIntent(GenreActivity.this);
+        startActivity(intent);
+        Intent intentService = MusicService.getMusicServiceIntent(GenreActivity.this,
+                mTracks.indexOf(track), mTracks);
+        startService(intentService);
     }
 }
