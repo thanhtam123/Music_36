@@ -2,6 +2,7 @@ package com.example.admin.musicplayer.screen;
 
 import android.annotation.SuppressLint;
 import android.databinding.BindingAdapter;
+import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +15,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class BindingUltils {
+
+    private BindingUltils(){}
 
     public static String splitName(String text) {
         String name = text.split(Constants.COLON)[2].replace(Constants.HYPHEN,Constants.SPACE);
@@ -33,5 +36,10 @@ public class BindingUltils {
                 .load(imageUrl)
                 .fitCenter()
                 .into(view);
+    }
+
+    @BindingAdapter("imgRes")
+    public static void loadImage(ImageView view, @DrawableRes int res) {
+        view.setImageResource(res);
     }
 }

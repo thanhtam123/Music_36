@@ -19,8 +19,8 @@ import com.example.admin.musicplayer.data.model.Track;
 import com.example.admin.musicplayer.databinding.ActivityGenreBinding;
 import com.example.admin.musicplayer.screen.HandlerClick;
 import com.example.admin.musicplayer.screen.TrackClickListener;
-import com.example.admin.musicplayer.screen.player.MusicService;
 import com.example.admin.musicplayer.screen.player.PlayerActivity;
+import com.example.admin.musicplayer.service.MusicService;
 
 import java.util.ArrayList;
 
