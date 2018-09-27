@@ -17,6 +17,8 @@ import com.example.admin.musicplayer.R;
 import com.example.admin.musicplayer.data.model.LoopType;
 import com.example.admin.musicplayer.data.model.PlayMode;
 import com.example.admin.musicplayer.data.model.Track;
+import com.example.admin.musicplayer.data.source.local.PlayModeLocalDataSource;
+import com.example.admin.musicplayer.data.source.repository.PlayModeRepository;
 import com.example.admin.musicplayer.databinding.ActivityPlayerBinding;
 import com.example.admin.musicplayer.screen.HandlerClick;
 import com.example.admin.musicplayer.service.MusicService;
@@ -31,6 +33,7 @@ public class PlayerActivity extends AppCompatActivity implements
     private ActivityPlayerBinding mBinding;
     private PlayMode mPlayMode;
     private boolean mBinded;
+    private PlayModeRepository mPlayModeRepository;
     private PlayerViewModel mViewModel;
     private Runnable mRunnable;
     private Handler mHandler = new Handler();
@@ -67,6 +70,10 @@ public class PlayerActivity extends AppCompatActivity implements
                 R.layout.activity_player);
         mViewModel = ViewModelProviders.of(PlayerActivity.this)
                 .get(PlayerViewModel.class);
+        mPlayModeRepository = PlayModeRepository.getInstance(
+                PlayModeLocalDataSource.getInstance(
+                        this.getApplication().getApplicationContext()));
+        mViewModel.setPlayModeRepository(mPlayModeRepository);
         mBinding.executePendingBindings();
         initPlayMode();
         initListener();
