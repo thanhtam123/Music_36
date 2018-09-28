@@ -15,7 +15,11 @@
 
         <variable
             name="listener"
-            type="com.example.admin.musicplayer.screen.player.PlayerActivity" />
+            type="com.example.admin.musicplayer.screen.player.PlayerActivity"/>
+
+        <variable
+            name="viewModel"
+            type="com.example.admin.musicplayer.screen.player.PlayerViewModel"/>
 
         <variable
             name="handler"
@@ -30,7 +34,7 @@
         android:theme="@style/ThemePlayer">
 
         <ImageView
-            android:id="@+id/imageview_track"
+            android:id="@+id/image_view_track"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_320"
             android:scaleType="centerCrop"
@@ -40,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textview_name_track"
+            android:id="@+id/text_view_name_track"
             android:layout_width="@dimen/dp_240"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_8"
@@ -53,22 +57,22 @@
             android:textSize="@dimen/sp_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_track" />
+            app:layout_constraintTop_toBottomOf="@+id/image_view_track" />
 
         <ImageView
-            android:id="@+id/imageview_favorite_genre"
+            android:id="@+id/image_view_favorite_genre"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_24"
-            android:onClick="@{() -> listener.onFavorite()}"
-            app:layout_constraintEnd_toStartOf="@+id/textview_name_track"
+            android:onClick="@{() -> listener.onFavoriteClick()}"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_name_track"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_name_track"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_name_track"
             app:srcCompat="@mipmap/ic_like_off" />
 
         <ImageView
-            android:id="@+id/imageview_download"
+            android:id="@+id/image_view_download"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_marginEnd="@dimen/dp_32"
@@ -77,11 +81,11 @@
             android:src="@mipmap/ic_offline_off"
             android:visibility="@{track.getDownloadable() ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textview_name_track"
-            app:layout_constraintTop_toBottomOf="@+id/textview_name_track" />
+            app:layout_constraintStart_toEndOf="@+id/text_view_name_track"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_name_track" />
 
         <TextView
-            android:id="@+id/textview_singer"
+            android:id="@+id/text_view_singer"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_24"
@@ -90,100 +94,104 @@
             android:maxLength="1"
             android:text="@{track.getPublisherMetadata().getArtist()}"
             android:textSize="@dimen/sp_18"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_download"
-            app:layout_constraintStart_toEndOf="@+id/imageview_favorite_genre"
-            app:layout_constraintTop_toBottomOf="@+id/textview_name_track" />
+            app:layout_constraintEnd_toStartOf="@+id/image_view_download"
+            app:layout_constraintStart_toEndOf="@+id/image_view_favorite_genre"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_name_track" />
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="@dimen/dp_270"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_24"
-            app:layout_constraintEnd_toStartOf="@+id/textview_time_total"
-            app:layout_constraintStart_toEndOf="@+id/textview_time_running"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_download" />
+            android:max="@{viewModel.maxSeekBar}"
+            android:progress="@{viewModel.positionSeekBar}"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_time_total"
+            app:layout_constraintStart_toEndOf="@+id/text_view_time_running"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_download" />
 
         <TextView
-            android:id="@+id/textview_time_running"
+            android:id="@+id/text_view_time_running"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_24"
+            android:text="@{BindingUltils.convertMilisecToMinute(viewModel.positionSeekBar*1000)}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_favorite_genre" />
+            app:layout_constraintTop_toBottomOf="@+id/image_view_favorite_genre" />
 
         <TextView
-            android:id="@+id/textview_time_total"
+            android:id="@+id/text_view_time_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_24"
             android:text="@{BindingUltils.convertMilisecToMinute(track.getDuration())}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_download" />
+            app:layout_constraintTop_toBottomOf="@+id/image_view_download" />
 
         <ImageView
-            android:id="@+id/imageview_shuffle"
+            android:id="@+id/image_view_shuffle"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_marginBottom="@dimen/dp_8"
             android:layout_marginLeft="@dimen/dp_32"
-            android:onClick="@{() -> listener.onShuffer()}"
+            android:onClick="@{() -> listener.onShufferClick()}"
+            android:src="@{viewModel.isShuffle ? @drawable/ic_shuffle_on :@drawable/ic_shuffle_off_white}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_time_running"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_running"
             app:srcCompat="@mipmap/ic_shuffle_off_white" />
 
         <ImageView
-            android:id="@+id/imageview_previous"
+            android:id="@+id/image_view_previous"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_marginBottom="@dimen/dp_8"
-            android:onClick="@{() -> listener.onPrevious()}"
+            android:onClick="@{() -> listener.onPreviousClick()}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_play"
-            app:layout_constraintStart_toEndOf="@+id/imageview_shuffle"
-            app:layout_constraintTop_toBottomOf="@+id/textview_time_running"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_play"
+            app:layout_constraintStart_toEndOf="@+id/image_view_shuffle"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_running"
             app:srcCompat="@drawable/ic_previous" />
 
         <ImageView
-            android:id="@+id/imageview_play"
+            android:id="@+id/image_view_play"
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
             android:layout_marginBottom="@dimen/dp_8"
             android:onClick="@{() -> listener.onPlayClick()}"
-            android:src="@drawable/ic_play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageview_previous"
+            android:src="@{viewModel.playState ? @drawable/ic_pause :@drawable/ic_play}"
+            app:layout_constraintStart_toEndOf="@+id/image_view_previous"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_time_total" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_total" />
 
         <ImageView
-            android:id="@+id/imageview_next"
+            android:id="@+id/image_view_next"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_marginBottom="@dimen/dp_8"
             android:layout_marginLeft="@dimen/dp_8"
-            android:onClick="@{() -> listener.onNext()}"
+            android:onClick="@{() -> listener.onNextClick()}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_loop"
-            app:layout_constraintStart_toEndOf="@+id/imageview_play"
-            app:layout_constraintTop_toBottomOf="@+id/textview_time_total"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_loop"
+            app:layout_constraintStart_toEndOf="@+id/image_view_play"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_total"
             app:srcCompat="@drawable/ic_next" />
 
         <ImageView
-            android:id="@+id/imageview_loop"
+            android:id="@+id/image_view_loop"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
             android:layout_marginBottom="@dimen/dp_8"
             android:layout_marginStart="@dimen/dp_8"
-            android:onClick="@{() -> listener.onLoop()}"
+            android:onClick="@{() -> listener.onLoopClick()}"
+            bind:imgRes="@{viewModel.loopRes}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageview_next"
-            app:layout_constraintTop_toBottomOf="@+id/textview_time_total"
-            app:srcCompat="@mipmap/ic_no_loop" />
+            app:layout_constraintStart_toEndOf="@+id/image_view_next"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_total" />
 
     </android.support.constraint.ConstraintLayout>
 
