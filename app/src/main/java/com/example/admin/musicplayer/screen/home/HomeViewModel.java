@@ -31,7 +31,10 @@ public class HomeViewModel extends AndroidViewModel {
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        mGenreRepository = GenreRepository.getInstance();
+    }
+
+    public void setGenreRepository(GenreRepository genreRepository) {
+        mGenreRepository = genreRepository;
     }
 
     LiveData<List<Genre>> getAllGenres() {

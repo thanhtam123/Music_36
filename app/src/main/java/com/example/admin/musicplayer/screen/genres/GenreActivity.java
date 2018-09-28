@@ -16,6 +16,10 @@ import com.example.admin.musicplayer.Constants;
 import com.example.admin.musicplayer.R;
 import com.example.admin.musicplayer.data.model.Genre;
 import com.example.admin.musicplayer.data.model.Track;
+import com.example.admin.musicplayer.data.source.local.TrackLocalDataSource;
+import com.example.admin.musicplayer.data.source.local.config.sqlite.TrackDatabase;
+import com.example.admin.musicplayer.data.source.remote.GenreRemoteDataSource;
+import com.example.admin.musicplayer.data.source.repository.GenreRepository;
 import com.example.admin.musicplayer.databinding.ActivityGenreBinding;
 import com.example.admin.musicplayer.screen.HandlerClick;
 import com.example.admin.musicplayer.screen.TrackClickListener;
@@ -35,6 +39,7 @@ public class GenreActivity extends AppCompatActivity implements TrackClickListen
     private ArrayList<Track> mTracks;
     private String mUrn;
     private String mType;
+    private GenreRepository mRepository;
     private int mOffset;
     private EndlessRecyclerViewScrollListener mListener;
 
@@ -54,6 +59,11 @@ public class GenreActivity extends AppCompatActivity implements TrackClickListen
         super.onCreate(savedInstanceState);
         mGenreViewModel = ViewModelProviders.of(GenreActivity.this)
                 .get(GenreViewModel.class);
+        mRepository =  GenreRepository.getInstance(
+                GenreRemoteDataSource.getGenreRemoteDataSource(),
+                TrackLocalDataSource.getInstance(
+                        TrackDatabase.getInstance(this.getApplication()).trackDao()));
+        mGenreViewModel.setGenreRepository(mRepository);
         getDataFromBundle();
         initGenresView();
     }

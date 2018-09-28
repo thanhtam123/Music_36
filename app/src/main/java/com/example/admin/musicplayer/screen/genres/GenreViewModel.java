@@ -24,8 +24,11 @@ public class GenreViewModel extends AndroidViewModel {
 
     public GenreViewModel(@NonNull Application application) {
         super(application);
-        mGenreRepository = GenreRepository.getInstance();
         mGenres = new MutableLiveData<>();
+    }
+
+    public void setGenreRepository(GenreRepository genreRepository) {
+        mGenreRepository = genreRepository;
     }
 
     LiveData<Genre> getGenre(String kind, @GenreType String type, int offset, String urn, String api) {

@@ -13,10 +13,15 @@ import android.view.ViewGroup;
 
 import com.example.admin.musicplayer.R;
 import com.example.admin.musicplayer.data.model.Genre;
+import com.example.admin.musicplayer.data.source.local.config.sqlite.TrackDatabase;
+import com.example.admin.musicplayer.data.source.local.TrackLocalDataSource;
+import com.example.admin.musicplayer.data.source.remote.GenreRemoteDataSource;
+import com.example.admin.musicplayer.data.source.repository.GenreRepository;
 import com.example.admin.musicplayer.databinding.FragmentHomeBinding;
 import com.example.admin.musicplayer.screen.HandlerClick;
 
 import java.util.List;
+
 
 /**
  * Created by TamTT on 9/15/2018.
@@ -28,6 +33,7 @@ public class HomeFragment extends Fragment{
     private FragmentHomeBinding mBinding;
     private GenreAdapter mAdapter;
     private HandlerClick mHandlerClick;
+    private GenreRepository mRepository;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -38,6 +44,11 @@ public class HomeFragment extends Fragment{
         super.onCreate(savedInstanceState);
         mHomeViewModel = ViewModelProviders.of(getActivity()).
                 get(HomeViewModel.class);
+        mRepository = GenreRepository.getInstance(
+                GenreRemoteDataSource.getGenreRemoteDataSource(),
+                TrackLocalDataSource.getInstance(
+                        TrackDatabase.getInstance(getActivity()).trackDao()));
+        mHomeViewModel.setGenreRepository(mRepository);
         mHandlerClick = new HandlerClick(getActivity());
         mAdapter = new GenreAdapter(getContext(), mHandlerClick);
     }
